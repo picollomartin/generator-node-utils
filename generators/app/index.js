@@ -1,25 +1,24 @@
-"use strict";
-const Generator = require("yeoman-generator");
-const cfonts = require("cfonts");
+const Generator = require('yeoman-generator');
+const cfonts = require('cfonts');
 
 module.exports = class extends Generator {
   prompting() {
-    cfonts.say("NODE JS|UTILS", {
-      font: "block",
-      align: "center",
-      colors: ["green", "green"],
-      background: "transparent",
+    cfonts.say('NODE JS|UTILS', {
+      font: 'block',
+      align: 'center',
+      colors: ['green', 'green'],
+      background: 'transparent',
       letterSpacing: 1,
       lineHeight: 1,
       space: true,
-      maxLength: "0"
+      maxLength: '0'
     });
 
     const prompts = [
       {
-        type: "confirm",
-        name: "someAnswer",
-        message: "Would you like to enable this option?",
+        type: 'confirm',
+        name: 'someAnswer',
+        message: 'Would you like to enable this option?',
         default: true
       }
     ];
@@ -31,10 +30,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.fs.copy(
-      this.templatePath("dummyfile.txt"),
-      this.destinationPath("dummyfile.txt")
-    );
+    this.fs.copy(this.templatePath('dummyfile.txt'), this.destinationPath('dummyfile.txt'));
   }
 
   install() {
