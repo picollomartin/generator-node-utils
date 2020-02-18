@@ -22,6 +22,13 @@
 
 (Note: Any local changes are automatically refreshed)
 
+## Add new tool
+
+- You have to modify [tools file](generators/app/tools.json) and add a new entry with the following format:
+
+
+
+
 ## License
 
 **generator-node-utils** is available under the MIT [license](LICENSE.md).

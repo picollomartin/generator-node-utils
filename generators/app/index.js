@@ -2,7 +2,7 @@
 const Generator = require('yeoman-generator');
 const cfonts = require('cfonts');
 const chalk = require('chalk');
-const chalkTemplate = require('chalk/templates');
+const chalkTemplate = require('chalk/source/templates');
 
 const tools = require('./tools.json');
 
