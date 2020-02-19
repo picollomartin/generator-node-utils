@@ -36,6 +36,25 @@ const generator = class extends Generator {
     }
   }
 
+  _getToolPackages() {
+    const toolPackages = this.tool.packages || [];
+    const packages = { dev: [], prod: [] };
+    toolPackages.forEach(toolPackage => {
+      packages[toolPackage.type].push(`${toolPackage.name}@${toolPackage.version}`);
+    });
+
+    return packages;
+  }
+
+  _installDependencies() {
+    if (this.packages.dev) {
+      this.npmInstall(this.packages.dev, { 'save-dev': true });
+    }
+    if (this.packages.prod) {
+      this.npmInstall(this.packages.prod, { save: true });
+    }
+  }
+
   prompting() {
     cfonts.say('NODE JS|UTILS', {
       font: 'block',
@@ -54,7 +73,7 @@ const generator = class extends Generator {
       this.props = props;
       this.tool = tools[props.tool];
       this.templates = this.tool.templates;
-      this.packages = this.tool.packages || [];
+      this.packages = this._getToolPackages();
 
       this._showFormattedMessage(this.tool.welcomeMessage);
 
@@ -87,7 +106,7 @@ const generator = class extends Generator {
   }
 
   install() {
-    this.npmInstall(this.packages);
+    this._installDependencies();
     this._showFormattedMessage(this.tool.finalMessage);
   }
 };
