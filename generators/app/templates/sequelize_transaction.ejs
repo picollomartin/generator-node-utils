@@ -1,0 +1,34 @@
+const { sequelize } = require('../models');
+const { users } = require('../models');
+const errors = require('../errors');
+<% if(comments) {%>
+// In general this kind of flows will be within an interactor.<%}%>
+const interactorName = async parameters => {
+  const transaction = await sequelize.transaction();
+<% if(comments) {%>
+  // Transactions must be placed within a try / catch structure.<%}%>
+  try {<% if(comments) {%>
+    // To save computing time it is convenient to place several queries that can be executed concurrently within an array and then make promise.all<%}%>
+    const promisesArray = [];
+
+    promisesArray.push(
+      users.create(
+        {
+          email: parameters.email,
+          firstName: parameters.firstName,
+          lastName: parameters.lastName
+        },
+        { transaction }
+      )
+    );
+
+    await Promise.all(promisesArray);
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw errors.databaseError(error.message);
+  }
+};
+
+module.exports = { interactorName };
