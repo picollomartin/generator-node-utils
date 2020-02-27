@@ -27,7 +27,6 @@
       "name": "comments",
       "message": "Would you like to enable the comments?"
     }],
-    "packages": [{ "name": "auth0", "version": "latest", "type": "prod" }],
     "welcomeMessage": "This tool would generate a interactor template for a transaction in sequelize",
     "finalMessage": "You don't need to configure any environment variables in your config file."
   }
