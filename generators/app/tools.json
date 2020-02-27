@@ -22,11 +22,58 @@
         "recommendedPath": "./app/interactors/modelName.js"
       }
     ],
-    "prompts": [{
-      "type": "confirm",
-      "name": "comments",
-      "message": "Would you like to enable the comments?"
-    }],
+    "prompts": [
+      {
+        "type": "input",
+        "name": "modelName",
+        "message": "Enter model name"
+      },
+      {
+        "type": "list",
+        "name": "isolationLevel",
+        "message": "Select the isolation level for your transaction",
+        "default": "Default (Isolation level of the database)",
+        "choices": [
+          {
+            "name": "Default (Isolation level of the database)",
+            "value": ""
+          },
+          {
+            "name": "Read uncommited",
+            "value": " isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED "
+          },
+          {
+            "name": "Read commited",
+            "value": " isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED "
+          },
+          {
+            "name": "Repeatable read",
+            "value": " isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.REPEATABLE_READ "
+          },
+          {
+            "name": "Serializable",
+            "value": " isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE "
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "name": "types",
+        "message": "Select the type of your transaction",
+        "default": "Default (implicit deferred)",
+        "choices": [
+          { "name": "Default (implicit deferred)", "value": "" },
+          { "name": "Deferred", "value": " type: sequelize.Transaction.TYPES.EXCLUSIVE " },
+          { "name": "Inmediate", "value": " type: sequelize.Transaction.TYPES.IMMEDIATE " },
+          { "name": "Exclusive", "value": " type: sequelize.Transaction.TYPES.EXCLUSIVE " }
+        ]
+      },
+      {
+        "type": "confirm",
+        "name": "comments",
+        "message": "Would you like to enable the comments?"
+      }
+    ],
     "welcomeMessage": "This tool would generate a interactor template for a transaction in sequelize",
     "finalMessage": "You don't need to configure any environment variables in your config file."
   }

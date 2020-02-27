@@ -1,10 +1,22 @@
 const { sequelize } = require('../models');
-const { modelName } = require('../models');
+const { <%= modelName %> } = require('../models');
 const errors = require('../errors');
 <% if(comments) {%>
 // In general this kind of flows will be within an interactor.<%}%>
-const interactorName = async parameters => {
-  const transaction = await sequelize.transaction();
+const interactorName = async parameters => {<% if(comments) {%>
+  // Brief explanation about transaction anomalies and DB ways to manage them:
+  // When transactions are executed simultaneously, different anomalous situations occur that can violate the properties of ACID (Atomicity, Consistency, Isolation, Durability).
+  // These anomalies are:
+  // - Dirty reads
+  // - lost updates
+  // - Non-repeatable reads
+  // - Phantom reads
+  // The different isolation levels of a transaction are:
+  // - Read Uncommitted: It is the total lack of isolation: Locks are not used, and the items are accessed without taking any precautions.
+  // - Read Committed: Avoids the dirty reading anomaly.
+  // - Repeatable Read: Avoid non-repeatable reading and dirty reading.
+  // - Serializable: Avoids all anomalies, and ensures that the result of the execution of transactions is equivalent to one of serial order. This is the default isolation of postgres<%}%>
+  const transaction = await sequelize.transaction({<%= isolationLevel %><% if( isolationLevel !== "" && types !== "" ) {%>,<%}%><%= types %>});
 <% if(comments) {%>
   // Transactions must be placed within a try / catch structure.<%}%>
   try {<% if(comments) {%>
@@ -12,7 +24,7 @@ const interactorName = async parameters => {
     const promisesArray = [];
 
     promisesArray.push(
-      modelName.create(
+      <%= modelName %>.create(
         {
           email: parameters.email,
           firstName: parameters.firstName,
