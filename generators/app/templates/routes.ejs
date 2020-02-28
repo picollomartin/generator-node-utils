@@ -1,0 +1,8 @@
+const { checkJwt<% if(scopeValidation) {%>, checkScopes<%}%> } = require('./middlewares/auth');
+const { controller0, controller1<% if(scopeValidation) {%>, controller2<%}%> } = require('./controllers/logueadores');
+
+exports.init = app => {
+  app.get('/public', controller0);
+  app.get('/private', checkJwt, controller1);<% if(scopeValidation) {%>
+  app.get('/private_with_permissions', checkJwt, checkScopes, controller2);<%}%>
+};
