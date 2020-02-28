@@ -18,6 +18,15 @@ const getToolPrompts = () => [
   }
 ];
 
+const validateRegex = (regex, message) => value => regex.test(value) || message;
+
+const APP_NAME_REGEX = /^[\w-]+$/;
+const validateAppName = validateRegex(APP_NAME_REGEX, 'Please enter a valid app name (alphanumeric)');
+
+const validations = {
+  alphanumeric: validateAppName
+};
+
 const generator = class extends Generator {
   _copyTplPromise(templatePath, destinationPath, toolProps) {
     return new Promise((resolve, reject) => {
@@ -78,7 +87,7 @@ const generator = class extends Generator {
       this._showFormattedMessage(this.tool.welcomeMessage);
 
       const toolPrompts = [
-        ...this.tool.prompts,
+        ...this.tool.prompts.map(prompt => ({ ...prompt, validate: validations[prompt.validate] })),
         ...this.tool.templates.map(template => ({
           type: 'input',
           name: `${this.props.tool}${template.name}`,

@@ -26,7 +26,8 @@
       {
         "type": "input",
         "name": "modelName",
-        "message": "Enter model name"
+        "message": "Enter model name",
+        "validate": "alphanumeric"
       },
       {
         "type": "list",
