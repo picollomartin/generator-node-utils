@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auth0 tool creates expected template auth0Middleware 1`] = `
+"// TODO build real template
+module.exports = {};
+"
+`;

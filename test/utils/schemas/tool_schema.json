@@ -66,6 +66,14 @@
             "default": "",
             "examples": ["list"],
             "pattern": "^(.*)$"
+          },
+          "example": {
+            "$id": "#/properties/prompts/items/properties/type",
+            "type": ["number","string","boolean","object","array"],
+            "title": "Example response for prompt (would be used for tests)",
+            "default": "",
+            "examples": ["true"],
+            "pattern": "^(.*)$"
           }
         }
       }
