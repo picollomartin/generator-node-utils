@@ -3,6 +3,7 @@ const Generator = require('yeoman-generator');
 const cfonts = require('cfonts');
 const chalk = require('chalk');
 const chalkTemplate = require('chalk/source/templates');
+const { validations } = require('./validations');
 
 const tools = require('./tools.json');
 
@@ -17,15 +18,6 @@ const getToolPrompts = () => [
     }))
   }
 ];
-
-const validateRegex = (regex, message) => value => regex.test(value) || message;
-
-const APP_NAME_REGEX = /^[\w-]+$/;
-const validateAppName = validateRegex(APP_NAME_REGEX, 'Please enter a valid app name (alphanumeric)');
-
-const validations = {
-  alphanumeric: validateAppName
-};
 
 const generator = class extends Generator {
   _copyTplPromise(templatePath, destinationPath, toolProps) {
