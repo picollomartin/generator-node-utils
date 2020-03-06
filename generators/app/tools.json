@@ -64,7 +64,7 @@
         "default": "Default (implicit deferred)",
         "choices": [
           { "name": "Default (implicit deferred)", "value": "" },
-          { "name": "Deferred", "value": " type: sequelize.Transaction.TYPES.EXCLUSIVE " },
+          { "name": "Deferred", "value": " type: sequelize.Transaction.TYPES.DEFERRED " },
           { "name": "Inmediate", "value": " type: sequelize.Transaction.TYPES.IMMEDIATE " },
           { "name": "Exclusive", "value": " type: sequelize.Transaction.TYPES.EXCLUSIVE " }
         ]
