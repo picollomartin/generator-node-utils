@@ -1,8 +1,8 @@
 const validateRegex = (regex, message) => value => regex.test(value) || message;
 
-const APP_NAME_REGEX = /^[\w-]+$/;
-const validateAppName = validateRegex(APP_NAME_REGEX, 'Please enter a valid app name (alphanumeric)');
+const ALPHANUMERIC_REGEX = /^[\w-]+$/;
+const alphanumeric = validateRegex(ALPHANUMERIC_REGEX, 'Please enter a valid alphanumeric value');
 
 exports.validations = {
-  alphanumeric: validateAppName
+  alphanumeric
 };
