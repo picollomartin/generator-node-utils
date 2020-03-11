@@ -4,18 +4,19 @@
     "templates": [
       {
         "name": "auth0MiddlewareRoutes",
-        "templatePath": "routes.ejs",
-        "recommendedPath": "./app/routes.js"
+        "templatePath": "example_routes.ejs",
+        "recommendedPath": "./app/example_routes.js"
       },
       {
         "name": "auth0Middleware",
-        "templatePath": "auth0.ejs",
+        "templatePath": "auth0/auth0.ejs",
         "recommendedPath": "./app/middlewares/auth0.js"
       },
       {
         "name": "auth0MiddlewareConfig",
         "templatePath": "index.js",
-        "recommendedPath": "./app/config/index.js"
+        "recommendedPath": "./app/config/index.js",
+        "condition": "example_files"
       }
     ],
     "prompts": [
@@ -23,6 +24,11 @@
         "type": "confirm",
         "name": "scopeValidation",
         "message": "Would you like to add scope validation?"
+      },
+      {
+        "type": "confirm",
+        "name": "example_files",
+        "message": "Would you like to generate example files for this tool(routes, config, env)?"
       },
       {
         "type": "confirm",
