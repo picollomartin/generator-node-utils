@@ -5,18 +5,25 @@
       {
         "name": "auth0MiddlewareRoutes",
         "templatePath": "example_routes.ejs",
-        "recommendedPath": "./app/example_routes.js"
+        "recommendedPath": "./app/example_routes.js",
+        "conditionalPrompt": "example_files"
+      },
+      {
+        "name": "auth0MiddlewareConfig",
+        "templatePath": "example_index.js",
+        "recommendedPath": "./app/config/example_index.js",
+        "conditionalPrompt": "example_files"
+      },
+      {
+        "name": "auth0MiddlewareEnv",
+        "templatePath": "example_.env",
+        "recommendedPath": "./app/example_.env",
+        "conditionalPrompt": "example_files"
       },
       {
         "name": "auth0Middleware",
         "templatePath": "auth0/auth0.ejs",
         "recommendedPath": "./app/middlewares/auth0.js"
-      },
-      {
-        "name": "auth0MiddlewareConfig",
-        "templatePath": "index.js",
-        "recommendedPath": "./app/config/index.js",
-        "condition": "example_files"
       }
     ],
     "prompts": [

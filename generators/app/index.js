@@ -3,7 +3,6 @@ const Generator = require('yeoman-generator');
 const cfonts = require('cfonts');
 const chalk = require('chalk');
 const chalkTemplate = require('chalk/source/templates');
-const { fileConditions } = require('./file_conditions');
 
 const tools = require('./tools.json');
 
@@ -77,14 +76,14 @@ const generator = class extends Generator {
       this.packages = this._getToolPackages();
 
       this._showFormattedMessage(this.tool.welcomeMessage);
-
       const toolPrompts = [
         ...this.tool.prompts,
         ...this.tool.templates.map(template => ({
           type: 'input',
           name: `${this.props.tool}${template.name}`,
           message: template.message || `Select directory for template ${template.templatePath}: `,
-          default: template.recommendedPath
+          default: template.recommendedPath,
+          when: response => (template.conditionalPrompt ? response[template.conditionalPrompt] : true)
         }))
       ];
 
@@ -96,13 +95,15 @@ const generator = class extends Generator {
 
   writing() {
     return Promise.all(
-      this.templates.map(template =>
-        this._copyTplPromise(
-          template.templatePath,
-          this.toolProps[`${this.props.tool}${template.name}`],
-          this.toolProps
+      this.templates
+        .filter(template => this.toolProps[`${this.props.tool}${template.name}`])
+        .map(template =>
+          this._copyTplPromise(
+            template.templatePath,
+            this.toolProps[`${this.props.tool}${template.name}`],
+            this.toolProps
+          )
         )
-      )
     );
   }
 
