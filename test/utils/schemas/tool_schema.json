@@ -124,6 +124,14 @@
       "default": "",
       "examples": ["You should configure this environment variables (BLA_1, BLA_2) in your config file"],
       "pattern": "^(.*)$"
+    },
+    "conditionalPrompt": {
+      "$id": "#/properties/conditionalPrompt",
+      "type": "string",
+      "title": "Name of the parent tool",
+      "default": "",
+      "examples": ["exampleFiles"],
+      "pattern": "^(.*)$"
     }
   }
 }
