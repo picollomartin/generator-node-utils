@@ -1,0 +1,51 @@
+const { sequelize } = require('../models');
+const { <%= modelName %> } = require('../models');
+const errors = require('../errors');
+<% if(comments) {%>
+// In general this kind of flows will be within an interactor.<%}%>
+const interactorName = async parameters => {<% if(comments) {%>
+  // Brief explanation about transaction anomalies and DB ways to manage them:
+  // When transactions are executed simultaneously, different anomalous situations occur that can violate the properties of ACID (Atomicity, Consistency, Isolation, Durability).
+  // These anomalies are:
+  // - Dirty reads
+  // - lost updates
+  // - Non-repeatable reads
+  // - Phantom reads
+  // The way to manage these anomalies is with different isolation levels which are:
+  // - Read Uncommitted: It is the total lack of isolation: Locks are not used, and the items are accessed without taking any precautions.
+  // - Read Committed: Avoids the dirty reading anomaly.
+  // - Repeatable Read: Avoid non-repeatable reading and dirty reading.
+  // - Serializable: Avoids all anomalies, and ensures that the result of the execution of transactions is equivalent to one of serial order. This is the default isolation of postgres
+  // Transactions also have types:
+  // - Deferred: Acquire and release the appropriate lock(s) for each SQL operation automatically. The operative philosophy here is Just-In-Time; no lock is held for longer than needed, and BEGIN itself doesn’t try to grab any locks at all. (This is the default when no actual mode is specified.)
+  // - Inmediate: Immediately try to acquire and hold RESERVED locks on all databases opened by this connection. This instantly blocks out all other writers for the duration of this transaction. BEGIN IMMEDIATE TRANSACTION will block or fail if another connection has a RESERVED or EXCLUSIVE lock on any of this connection’s open DBs.
+  // - Exclusive: Immediately acquire and hold EXCLUSIVE locks on all databases opened by this connection. This instantly blocks out all other connections for the duration of this transaction. BEGIN EXCLUSIVE TRANSACTION will block or fail if another connection has any kind of lock on any of this connection’s open DBs.
+  // If you want to check some examples about locks you can check some out here: https://sequelize.org/master/class/lib/transaction.js~Transaction.html#static-get-LOCK<%}%>
+  const transaction = await sequelize.transaction({<%= isolationLevel %><% if( isolationLevel !== "" && types !== "" ) {%>,<%}%><%= types %>});
+<% if(comments) {%>
+  // Transactions must be placed within a try / catch structure.<%}%>
+  try {<% if(comments) {%>
+    // To save computing time it is convenient to place several queries that can be executed concurrently within an array and then make promise.all<%}%>
+    const promisesArray = [];
+
+    promisesArray.push(
+      <%= modelName %>.create(
+        {
+          email: parameters.email,
+          firstName: parameters.firstName,
+          lastName: parameters.lastName
+        },
+        { transaction }
+      )
+    );
+
+    await Promise.all(promisesArray);
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw errors.databaseError(error.message);
+  }
+};
+
+module.exports = { interactorName };

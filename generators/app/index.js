@@ -3,6 +3,7 @@ const Generator = require('yeoman-generator');
 const cfonts = require('cfonts');
 const chalk = require('chalk');
 const chalkTemplate = require('chalk/source/templates');
+const { validations } = require('./validations');
 
 const tools = require('./tools.json');
 
@@ -78,7 +79,7 @@ const generator = class extends Generator {
       this._showFormattedMessage(this.tool.welcomeMessage);
 
       const toolPrompts = [
-        ...this.tool.prompts,
+        ...this.tool.prompts.map(prompt => ({ ...prompt, validate: validations[prompt.validate] })),
         ...this.tool.templates.map(template => ({
           type: 'input',
           name: `${this.props.tool}${template.name}`,
