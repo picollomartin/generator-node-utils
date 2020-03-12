@@ -6,19 +6,19 @@
         "name": "auth0MiddlewareRoutes",
         "templatePath": "example_routes.ejs",
         "recommendedPath": "./app/example_routes.js",
-        "conditionalPrompt": "example_files"
+        "conditionalPrompt": "exampleFiles"
       },
       {
         "name": "auth0MiddlewareConfig",
         "templatePath": "example_index.js",
         "recommendedPath": "./app/config/example_index.js",
-        "conditionalPrompt": "example_files"
+        "conditionalPrompt": "exampleFiles"
       },
       {
         "name": "auth0MiddlewareEnv",
         "templatePath": "example_.env",
         "recommendedPath": "./app/example_.env",
-        "conditionalPrompt": "example_files"
+        "conditionalPrompt": "exampleFiles"
       },
       {
         "name": "auth0Middleware",
@@ -34,7 +34,7 @@
       },
       {
         "type": "confirm",
-        "name": "example_files",
+        "name": "exampleFiles",
         "message": "Would you like to generate example files for this tool(routes, config, env)?"
       },
       {
