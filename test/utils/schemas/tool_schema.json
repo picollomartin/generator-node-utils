@@ -57,7 +57,7 @@
         "$id": "#/properties/prompts/items",
         "type": "object",
         "title": "A single prompt option for tool (check this link for more detail https://github.com/SBoudrias/Inquirer.js#prompt-types)",
-        "required": ["type"],
+        "required": ["type","example"],
         "properties": {
           "type": {
             "$id": "#/properties/prompts/items/properties/type",
@@ -65,6 +65,14 @@
             "title": "Type of prompt",
             "default": "",
             "examples": ["list"],
+            "pattern": "^(.*)$"
+          },
+          "example": {
+            "$id": "#/properties/prompts/items/properties/type",
+            "type": ["number","string","boolean","object","array"],
+            "title": "Example response for prompt (would be used for tests)",
+            "default": "",
+            "examples": ["true"],
             "pattern": "^(.*)$"
           }
         }

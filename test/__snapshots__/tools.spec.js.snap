@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auth0 tool creates expected template auth0Middleware 1`] = `
+"const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+const jwtAuthz = require('express-jwt-authz');
+
+const config = require('../../config');
+
+const { auth0endpoint, auth0audience } = config.common.auth0;
+
+module.exports = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: \`\${auth0endpoint}/.well-known/jwks.json\`
+  }),
+
+  audience: \`\${auth0audience}\`,
+  issuer: \`\${auth0endpoint}/\`,
+  algorithms: ['RS256']
+});
+
+// In general the scopes are defined with this format:
+// permission:resource
+// where \\"permission\\" is the permission level that the user that called the endpoint needs to access this resource using this endpoint. It could be for example: read, delete, update, create, register, view, etc...
+// and \\"resource\\" is the resource for which you request the permission.
+exports.checkScopes = scopes => jwtAuthz(scopes);
+"
+`;
+
+exports[`auth0 tool creates expected template auth0MiddlewareConfig 1`] = `
+"const config = {
+  common: {
+    auth0: {
+      auth0endpoint: process.env.AUTH0_ENDPOINT,
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      metaRedirect: process.env.META_URI,
+      auth0domain: process.env.AUTH0_DOMAIN,
+      auth0audience: process.env.AUTH0_AUDIENCE
+    }
+  }
+};
+
+module.exports = { config };
+"
+`;
+
+exports[`auth0 tool creates expected template auth0MiddlewareEnv 1`] = `
+"AUTH0_ENDPOINT=
+AUTH0_CLIENT_ID=
+AUTH0_CLIENT_SECRET=
+META_URI=
+AUTH0_DOMAIN=
+AUTH0_AUDIENCE="
+`;
+
+exports[`auth0 tool creates expected template auth0MiddlewareRoutes 1`] = `
+"const { checkJwt, checkScopes } = require('./middlewares/auth');
+const { controller0, controller1, controller2 } = require('./controllers/logueadores');
+
+exports.init = app => {
+  app.get('/public', controller0);
+  app.get('/private', checkJwt, controller1);
+  app.get('/private_with_permissions', checkJwt, checkScopes, controller2);
+};
+"
+`;
+
+exports[`transaction tool creates expected template sequelizeTransaction 1`] = `
+"const { sequelize } = require('../models');
+const { example } = require('../models');
+const errors = require('../errors');
+
+// In general this kind of flows will be within an interactor.
+const interactorName = async parameters => {
+  // Brief explanation about transaction anomalies and DB ways to manage them:
+  // When transactions are executed simultaneously, different anomalous situations occur that can violate the properties of ACID (Atomicity, Consistency, Isolation, Durability).
+  // These anomalies are:
+  // - Dirty reads
+  // - lost updates
+  // - Non-repeatable reads
+  // - Phantom reads
+  // The way to manage these anomalies is with different isolation levels which are:
+  // - Read Uncommitted: It is the total lack of isolation: Locks are not used, and the items are accessed without taking any precautions.
+  // - Read Committed: Avoids the dirty reading anomaly.
+  // - Repeatable Read: Avoid non-repeatable reading and dirty reading.
+  // - Serializable: Avoids all anomalies, and ensures that the result of the execution of transactions is equivalent to one of serial order. This is the default isolation of postgres
+  // Transactions also have types:
+  // - Deferred: Acquire and release the appropriate lock(s) for each SQL operation automatically. The operative philosophy here is Just-In-Time; no lock is held for longer than needed, and BEGIN itself doesn’t try to grab any locks at all. (This is the default when no actual mode is specified.)
+  // - Inmediate: Immediately try to acquire and hold RESERVED locks on all databases opened by this connection. This instantly blocks out all other writers for the duration of this transaction. BEGIN IMMEDIATE TRANSACTION will block or fail if another connection has a RESERVED or EXCLUSIVE lock on any of this connection’s open DBs.
+  // - Exclusive: Immediately acquire and hold EXCLUSIVE locks on all databases opened by this connection. This instantly blocks out all other connections for the duration of this transaction. BEGIN EXCLUSIVE TRANSACTION will block or fail if another connection has any kind of lock on any of this connection’s open DBs.
+  // If you want to check some examples about locks you can check some out here: https://sequelize.org/master/class/lib/transaction.js~Transaction.html#static-get-LOCK
+  const transaction = await sequelize.transaction({Default (Isolation level of the database),Default (implicit deferred)});
+
+  // Transactions must be placed within a try / catch structure.
+  try {
+    // To save computing time it is convenient to place several queries that can be executed concurrently within an array and then make promise.all
+    const promisesArray = [];
+
+    promisesArray.push(
+      example.create(
+        {
+          email: parameters.email,
+          firstName: parameters.firstName,
+          lastName: parameters.lastName
+        },
+        { transaction }
+      )
+    );
+
+    await Promise.all(promisesArray);
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw errors.databaseError(error.message);
+  }
+};
+
+module.exports = { interactorName };
+"
+`;
