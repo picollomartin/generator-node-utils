@@ -57,7 +57,7 @@
         "$id": "#/properties/prompts/items",
         "type": "object",
         "title": "A single prompt option for tool (check this link for more detail https://github.com/SBoudrias/Inquirer.js#prompt-types)",
-        "required": ["type"],
+        "required": ["type","example"],
         "properties": {
           "type": {
             "$id": "#/properties/prompts/items/properties/type",

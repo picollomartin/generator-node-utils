@@ -30,17 +30,20 @@
       {
         "type": "confirm",
         "name": "scopeValidation",
-        "message": "Would you like to add scope validation?"
+        "message": "Would you like to add scope validation?",
+        "example": true
       },
       {
         "type": "confirm",
         "name": "exampleFiles",
-        "message": "Would you like to generate example files for this tool(routes, config, env)?"
+        "message": "Would you like to generate example files for this tool(routes, config, env)?",
+        "example": true
       },
       {
         "type": "confirm",
         "name": "comments",
-        "message": "Would you like to enable the comments?"
+        "message": "Would you like to enable the comments?",
+        "example": true
       }
     ],
     "packages": [
@@ -65,13 +68,15 @@
         "type": "input",
         "name": "modelName",
         "message": "Enter model name",
-        "validate": "alphanumeric"
+        "validate": "alphanumeric",
+        "example": "example"
       },
       {
         "type": "list",
         "name": "isolationLevel",
         "message": "Select the isolation level for your transaction",
         "default": "Default (Isolation level of the database)",
+        "example": "Default (Isolation level of the database)",
         "choices": [
           {
             "name": "Default (Isolation level of the database)",
@@ -100,6 +105,7 @@
         "name": "types",
         "message": "Select the type of your transaction",
         "default": "Default (implicit deferred)",
+        "example": "Default (implicit deferred)",
         "choices": [
           { "name": "Default (implicit deferred)", "value": "" },
           { "name": "Deferred", "value": " type: sequelize.Transaction.TYPES.DEFERRED " },
@@ -110,7 +116,8 @@
       {
         "type": "confirm",
         "name": "comments",
-        "message": "Would you like to enable the comments?"
+        "message": "Would you like to enable the comments?",
+        "example": true
       }
     ],
     "welcomeMessage": "This tool would generate a interactor template for a transaction in sequelize",

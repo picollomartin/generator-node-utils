@@ -71,7 +71,7 @@ exports.init = app => {
 
 exports[`transaction tool creates expected template sequelizeTransaction 1`] = `
 "const { sequelize } = require('../models');
-const {  } = require('../models');
+const { example } = require('../models');
 const errors = require('../errors');
 
 // In general this kind of flows will be within an interactor.
@@ -101,7 +101,7 @@ const interactorName = async parameters => {
     const promisesArray = [];
 
     promisesArray.push(
-      .create(
+      example.create(
         {
           email: parameters.email,
           firstName: parameters.firstName,
