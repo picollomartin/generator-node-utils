@@ -18,9 +18,10 @@ module.exports = jwt({
   issuer: `${auth0endpoint}/`,
   algorithms: ['RS256']
 });
-<% if(scopeValidation) {%><% if(comments) {%>
+<% if(scopeValidation && comments) {%>
 // In general the scopes are defined with this format:
 // permission:resource
 // where "permission" is the permission level that the user that called the endpoint needs to access this resource using this endpoint. It could be for example: read, delete, update, create, register, view, etc...
-// and "resource" is the resource for which you request the permission.<%}%>
-exports.checkScopes = scopes => jwtAuthz(scopes);<%}%>
+// and "resource" is the resource for which you request the permission.<%}%><% if(scopeValidation) {%>
+exports.checkScopes = scopes => jwtAuthz(scopes);
+<%}%>
